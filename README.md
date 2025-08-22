@@ -14,4 +14,9 @@ This is a tool I created for testing purposes and also a bit randomly in my free
 Thank you very much,
 From Hung Nguyen with Love <3
 
+# Contact:
+- Facebook: https://www.facebook.com/chihungnguyen2644
+- Instagram: https://www.instagram.com/nch.hungg/
+- Mail: chihungnguyen889@gmail.com
+
 
