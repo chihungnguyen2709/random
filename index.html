@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình Tạo Số Ngẫu Nhiên & Máy Tính</title>
+    <!-- Tải Tailwind CSS và Font Awesome từ CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Liên kết đến tệp CSS đã tách ra -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .page-content {
+            display: none;
+        }
+        .page-content.active {
+            display: flex;
+        }
+        /* Style cho nút bấm máy tính */
+      
+        .calc-btn {
+    @apply p-4 rounded-xl text-2xl font-bold text-white transition-all duration-300 transform scale-100 hover:scale-105 active:scale-95;
+    background-color: var(--button-number-bg);
+    border: 1px solid var(--button-number-border);
+}
+.calc-btn[data-value="C"] {
+    background-color: var(--button-clear-bg);
+}
+.calc-btn[data-value="="] {
+    background-color: var(--button-equals-bg);
+}
+.calc-btn[data-value="+"], .calc-btn[data-value="-"], .calc-btn[data-value="*"], .calc-btn[data-value="/"] {
+    background-color: var(--button-op-bg);
+    border: 1px solid var(--button-op-border);
+}
+
+/* Thêm hover cho nút */
+.calc-btn:hover {
+    filter: brightness(1.1);
+}
+        
+    </style>
+</head>
+<body class="dark-mode">
+
+    <header class="flex justify-center p-4">
+        <nav class="flex space-x-4">
+            <button id="nav-random-gen" class="px-4 py-2 rounded-lg font-semibold text-white bg-blue-500 shadow-lg transition-colors duration-300">
+                Tạo Số Ngẫu Nhiên
+            </button>
+            <button id="nav-calculator" class="px-4 py-2 rounded-lg font-semibold text-gray-400 border border-gray-400 transition-colors duration-300">
+                Máy Tính
+            </button>
+        </nav>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <!-- Phần Tạo Số Ngẫu Nhiên -->
+        <div id="random-generator-page" class="page-content active w-full max-w-lg">
+            <div class="card w-full max-w-lg rounded-xl p-8 shadow-2xl">
+                <header class="flex justify-end mb-6">
+                    <div id="theme-toggle" class="w-14 h-8 bg-gray-600 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300">
+                        <div class="toggle-btn w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center">
+                            <i id="theme-icon" class="fa-solid fa-moon text-gray-800 text-sm"></i>
+                        </div>
+                    </div>
+                </header>
+                
+                <h1 class="text-3xl sm:text-4xl font-bold text-center mb-6">Tạo số ngẫu nhiên</h1>
+
+                <!-- Chế độ chọn -->
+                <div class="flex justify-center items-center space-x-4 mb-6">
+                    <button id="mode-unlimited" class="px-4 py-2 rounded-xl font-semibold border-2 border-transparent transition-all duration-300 transform scale-100 hover:scale-105 active:scale-95 text-sm sm:text-base bg-blue-500 text-white shadow-lg">
+                        Không giới hạn
+                    </button>
+                    <button id="mode-range" class="px-4 py-2 rounded-xl font-semibold border-2 border-gray-400 transition-all duration-300 transform scale-100 hover:scale-105 active:scale-95 text-sm sm:text-base text-gray-400">
+                        Chọn khoảng số
+                    </button>
+                </div>
+                
+                <!-- Vùng nhập khoảng số (mặc định ẩn) -->
+                <div id="range-inputs" class="hidden flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-6">
+                    <input type="number" id="min-number" placeholder="Từ" class="flex-1 min-w-0 p-3 rounded-lg bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                    <input type="number" id="max-number" placeholder="Đến" class="flex-1 min-w-0 p-3 rounded-lg bg-gray-700 text-gray-200 border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300">
+                </div>
+
+                <!-- Nút tạo số -->
+                <div class="flex justify-center mb-6">
+                    <button id="generate-btn" class="w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-lg bg-purple-600 text-white shadow-lg transform transition-all duration-300 hover:bg-purple-700 hover:scale-105 active:scale-95">
+                        Tạo Số
+                    </button>
+                </div>
+
+                <!-- Kết quả hiển thị -->
+                <div id="result-container" class="mt-8">
+                    <h2 class="text-xl sm:text-2xl font-semibold mb-4 text-center">Kết quả</h2>
+                    <div id="result-display" class="bg-gray-800 text-gray-100 p-6 rounded-xl border border-gray-600 min-h-[150px] flex items-center justify-center transition-all duration-300">
+                        <!-- Số ngẫu nhiên sẽ hiển thị ở đây -->
+                        <p class="text-center text-gray-400">Số sẽ xuất hiện ở đây 👆🥸.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phần Máy Tính (mặc định ẩn) -->
+        <div id="calculator-page" class="page-content w-full max-w-lg hidden">
+            <div class="card w-full max-w-lg rounded-xl p-8 shadow-2xl">
+                <header class="flex justify-end mb-6">
+                    <div id="theme-toggle-calc" class="w-14 h-8 bg-gray-600 rounded-full flex items-center p-1 cursor-pointer transition-colors duration-300">
+                        <div class="toggle-btn w-6 h-6 bg-white rounded-full shadow-md flex items-center justify-center">
+                            <i id="theme-icon-calc" class="fa-solid fa-moon text-gray-800 text-sm"></i>
+                        </div>
+                    </div>
+                </header>
+
+                <h1 class="text-3xl sm:text-4xl font-bold text-left mb-6">Máy Tính</h1>
+                
+                <div class="bg-gray-800 rounded-lg p-4 mb-4">
+                    <input type="text" id="calc-display" class="w-full text-right bg-transparent text-white text-3xl sm:text-4xl font-bold outline-none" readonly>
+                </div>
+
+                <div class="grid grid-cols-4 gap-4">
+                    <button class="calc-btn col-span-2" data-value="C">C</button>
+                    <button class="calc-btn" data-value="/">&divide;</button>
+                    <button class="calc-btn" data-value="*">&times;</button>
+                    
+                    <button class="calc-btn" data-value="7">7</button>
+                    <button class="calc-btn" data-value="8">8</button>
+                    <button class="calc-btn" data-value="9">9</button>
+                    <button class="calc-btn" data-value="-">-</button>
+                    
+                    <button class="calc-btn" data-value="4">4</button>
+                    <button class="calc-btn" data-value="5">5</button>
+                    <button class="calc-btn" data-value="6">6</button>
+                    <button class="calc-btn" data-value="+">+</button>
+                    
+                    <button class="calc-btn" data-value="1">1</button>
+                    <button class="calc-btn" data-value="2">2</button>
+                    <button class="calc-btn" data-value="3">3</button>
+                    <button class="calc-btn row-span-2" data-value="=">=</button>
+                    
+                    <button class="calc-btn col-span-2" data-value="0">0</button>
+                    <button class="calc-btn" data-value=".">.</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center p-4">
+        <div class="container mx-auto">
+            <p class="text-sm text-gray-300 mb-2">&copy; 2025 Trình Tạo Số Ngẫu Nhiên & Máy Tính by Hùng Nguyễn. All rights reserved.</p>
+            <div class="flex justify-center space-x-6 text-xl">
+                <a href="https://www.facebook.com/chihungnguyen2644" class="text-gray-300 hover:text-blue-400 transition-colors duration-200" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/nch.hungg/" class="text-gray-300 hover:text-pink-400 transition-colors duration-200" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="mailto:nch.hungg@gmail.com" class="text-gray-300 hover:text-red-400 transition-colors duration-200" aria-label="Gmail"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Liên kết đến tệp JavaScript chính -->
+    <script src="script.js"></script>
+    
+    <!-- Liên kết đến tệp JavaScript cho máy tính -->
+    <script src="calculator.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navRandomGen = document.getElementById('nav-random-gen');
+            const navCalculator = document.getElementById('nav-calculator');
+            const randomGenPage = document.getElementById('random-generator-page');
+            const calculatorPage = document.getElementById('calculator-page');
+
+            navRandomGen.addEventListener('click', () => {
+                randomGenPage.classList.add('active');
+                calculatorPage.classList.remove('active');
+                navRandomGen.classList.add('bg-blue-500', 'text-white');
+                navRandomGen.classList.remove('text-gray-400', 'border', 'border-gray-400');
+                navCalculator.classList.add('text-gray-400', 'border', 'border-gray-400');
+                navCalculator.classList.remove('bg-blue-500', 'text-white');
+            });
+
+            navCalculator.addEventListener('click', () => {
+                randomGenPage.classList.remove('active');
+                calculatorPage.classList.add('active');
+                navCalculator.classList.add('bg-blue-500', 'text-white');
+                navCalculator.classList.remove('text-gray-400', 'border', 'border-gray-400');
+                navRandomGen.classList.add('text-gray-400', 'border', 'border-gray-400');
+                navRandomGen.classList.remove('bg-blue-500', 'text-white');
+            });
+        });
+    </script>
+</body>
+</html>

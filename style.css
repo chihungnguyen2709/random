@@ -1,0 +1,107 @@
+/* Tải phông chữ Inter từ Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        
+/* Biến CSS cho chế độ tối (mặc định) */
+:root {
+    --bg-start: #1a202c; /* Gần đen */
+    --bg-end: #4a5568; /* Gần xám */
+    --text-color: #f3f4f6;
+    --card-bg: #1f2937;
+    --card-border: #4b5563;
+    --button-bg: #c026d3; /* Purple-600 */
+    --button-hover: #a21caf; /* Purple-700 */
+    --input-bg: #374151;
+    --input-border: #4b5563;
+}
+
+/* Biến CSS cho chế độ sáng */
+body.light-mode {
+    --bg-start: #f7fafc; /* Gần trắng */
+    --bg-end: #a0aec0; /* Gần xám */
+    --text-color: #1f2937;
+    --card-bg: #ffffff;
+    --card-border: #d1d5db;
+    --button-bg: #c026d3;
+    --button-hover: #a21caf;
+    --input-bg: #e5e7eb;
+    --input-border: #d1d5db;
+}
+
+/* Kiểu chung cho body */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
+    color: var(--text-color);
+    transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Kiểu cho thẻ card (thẻ chứa nội dung chính) */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+}
+
+/* Kiểu cho nút chuyển đổi sáng/tối */
+.toggle-btn {
+    transition: transform 0.3s ease-in-out;
+}
+.toggle-btn.active {
+    transform: translateX(1.5rem);
+}
+
+/* Kiểu cho footer */
+footer {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.5s ease-in-out;
+}
+
+/* Nút máy tính - chế độ tối */
+:root {
+    --button-number-bg: #2d3748;   /* Xám đậm */
+    --button-number-border: #4a5568;
+    --button-op-bg: #1e40af;       /* Xanh dương */
+    --button-op-border: #3b82f6;
+    --button-clear-bg: #dc2626;    /* Đỏ */
+    --button-equals-bg: #16a34a;   /* Xanh lá */
+}
+
+/* Nút máy tính - chế độ sáng */
+body.light-mode {
+    --button-number-bg: #e5e7eb;   /* Xám nhạt */
+    --button-number-border: #9ca3af;
+    --button-op-bg: #3b82f6;       /* Xanh dương */
+    --button-op-border: #2563eb;
+    --button-clear-bg: #ef4444;    /* Đỏ tươi */
+    --button-equals-bg: #22c55e;   /* Xanh lá tươi */
+}
+
+/* Bo tròn nút máy tính */
+.calc-btn {
+    border-radius: 0.75rem; /* bo góc chung */
+    padding: 0.9rem 1.1rem; /* tùy chỉnh padding nếu cần */
+    box-shadow: 0 6px 12px rgba(2,6,23,0.08);
+    transition: background-color .15s ease, transform .08s ease, box-shadow .15s ease, border-radius .15s ease;
+    overflow: hidden;
+}
+
+/* Nút chiếm 2 cột -> làm viên (pill) */
+.calc-btn.col-span-2 {
+    border-radius: 0.75rem;
+}
+
+/* Nút bằng 2 hàng -> giữ bo tròn chuẩn */
+.calc-btn.row-span-2 {
+    border-radius: 0.75rem;
+}
+
+/* Focus / keyboard */
+.calc-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.18);
+}
